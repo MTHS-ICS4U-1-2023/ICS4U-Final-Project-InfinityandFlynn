@@ -20,7 +20,6 @@ const config: Types.Core.GameConfig = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: [
-        HelloWorld,
         Boot,
         Preloader,
         MainMenu,
