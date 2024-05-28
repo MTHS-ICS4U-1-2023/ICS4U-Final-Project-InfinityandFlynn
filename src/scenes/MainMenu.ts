@@ -1,5 +1,4 @@
 import { Scene, GameObjects } from 'phaser';
-import { Preloader } from './Preloader';
 
 export class MainMenu extends Scene
 {
@@ -17,7 +16,7 @@ export class MainMenu extends Scene
         
         this.background = this.add.image(512, 384, 'background');
 
-        this.load.image('sprite', 'superStand.png');
+        this.logo = this.add.image(512, 300, 'enemySprite');
 
         this.title = this.add.text(512, 460, 'Main Menu', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
