@@ -18,9 +18,6 @@ export class Preloader extends Scene
         //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
         const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
 
-        // load one of the sprites in rawAssets (step 3-01)
-        this.load.image('sprite', 'superStand.png');
-
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress: number) => {
 
@@ -35,7 +32,7 @@ export class Preloader extends Scene
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('logo', 'logo.png');
+        this.load.image('enemySprite', 'enemySprite.png');
     }
 
     create ()
