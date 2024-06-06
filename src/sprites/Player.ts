@@ -11,5 +11,6 @@ import { Physics } from 'phaser';
 
 class Player extends GameObjects.Sprite{
     playerSprite = this.scene.add.sprite(100, 450, 'playerSprite');
+    
 }
 export default Player;
