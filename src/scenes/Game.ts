@@ -11,6 +11,8 @@ export class Game extends Scene
         super('Game');
     }
 
+    config: Phaser.Types.Scenes.SettingsConfig;
+
     create ()
     {
         this.camera = this.cameras.main;
