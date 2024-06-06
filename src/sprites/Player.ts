@@ -7,10 +7,7 @@
  */
 
 import { GameObjects } from 'phaser';
-import { Physics } from 'phaser';
 
-class Player extends GameObjects.Sprite{
-    playerSprite = this.scene.add.sprite(100, 450, 'playerSprite');
-    
+export default class Player extends GameObjects.Sprite{
+
 }
-export default Player;
