@@ -16,10 +16,12 @@ export class Game extends Scene
     create ()
     {
         this.camera = this.cameras.main;
+        this.camera.setBounds(0, 0, 1024, 576);
 
         this.background = this.add.image(0, 0, 'gameBG').setOrigin(0, 0);
-        this.background.setAlpha(0.5);
+        this.background.setAlpha(1);
 
+        // add player sprite (centers on 47, 417)
         
 
     }

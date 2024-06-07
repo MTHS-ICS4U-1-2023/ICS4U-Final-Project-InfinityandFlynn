@@ -47,12 +47,12 @@ class Player extends Phaser.GameObjects.Sprite
         }
     }
 
-    // don't let the player move below 440 on the y axis
+    // don't let the player move below 30 on the y axis
     update ()
     {
-        if (this.y > 440)
+        if (this.y > 30)
         {
-            this.y = 440;
+            this.y = 30;
         }
     }
 
