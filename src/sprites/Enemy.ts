@@ -9,7 +9,7 @@
 import { GameObjects } from 'phaser';
 import Player from './Player';
 
-class Enemey extends GameObjects.Sprite
+class Enemy extends GameObjects.Sprite
 {
     protected health: number = 10;
 
@@ -21,9 +21,8 @@ class Enemey extends GameObjects.Sprite
     }
 
     // add enemy to the scene (random x, 450 y)
-    addEnemy()
+    addEnemy(enemy)
     {
-        let enemy = this.physics.add.sprite(Math.floor(Math.random() * 1024), 450, 'enemySprite');
         enemy.setBounce(0.2);
         enemy.setGravityY(300);
         enemy.setCollideWorldBounds(true);
@@ -69,4 +68,4 @@ class Enemey extends GameObjects.Sprite
     }
 
 }
-export default Enemey;
+export default Enemy;

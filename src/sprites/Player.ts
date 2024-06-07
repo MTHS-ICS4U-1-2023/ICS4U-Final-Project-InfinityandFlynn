@@ -6,9 +6,9 @@
  * Since: 2024-06-06
  */
 
-import Phaser from 'phaser';
+import { GameObjects } from 'phaser';
 
-class Player extends Phaser.GameObjects.Sprite
+class Player extends GameObjects.Sprite
 {
     public health: number = 100;
     public score: number;
@@ -21,14 +21,8 @@ class Player extends Phaser.GameObjects.Sprite
 
         this.health = health;
         this.score = score;
-
-        let player = this.physics.add.sprite(100, 450, 'mainSprite');
-
-        player.setBounce(0.2);
-        player.setGravityY(300);
-        player.setCollideWorldBounds(true);
-        this.scene.add.existing(this);
     }
+
 
     // Takes keyboard input and moves the player sprite accordingly.
     move (cursors: Phaser.Types.Input.Keyboard.CursorKeys)
