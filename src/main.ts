@@ -11,7 +11,7 @@ import { Game, Types } from "phaser";
 const config: Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: 1024,
-    height: 768,
+    height: 576,
     parent: 'game-container',
     backgroundColor: '#028af8',
     physics: {
