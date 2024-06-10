@@ -49,5 +49,4 @@ export class Preloader extends Scene
     }
 
 }
-
 export default Preloader;

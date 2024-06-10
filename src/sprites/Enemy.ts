@@ -14,23 +14,27 @@ class Enemy extends GameObjects.Sprite
     protected health: number = 10;
 
     // The constructor initializes the enemy sprite.
-    constructor (scene: Phaser.Scene, x: number, y: number, health: number = 10)
+    constructor (config: { scene: Phaser.Scene, x: number, y: number, key: string }, health: number)
     {
-        super(scene, x, y, 'enemySprite');
+        super(config.scene, config.x, config.y, config.key);
         this.health = health;
     }
 
-    // add enemy to the scene (random x, 450 y)
-    addEnemy(enemy)
+    // add enemy to the scene
+    public addEnemy(scene: Phaser.Scene, enemy: Enemy)
     {
-        enemy.setBounce(0.2);
-        enemy.setGravityY(300);
-        enemy.setCollideWorldBounds(true);
-        this.scene.add.existing(this);
+        scene.add.existing(enemy);
+        scene.physics.add.existing(enemy);
+    }
+
+    // generate random x value for enemy (between 500 and 924)
+    static randomX()
+    {
+        return Math.floor(Math.random() * (924 - 500) + 500);
     }
 
     // Makes the enemy sprite move towards player if they're within 100 pixels 
-    wakeUp (player: Player)
+    public wakeUp (player: Player)
     {
         if (this.x - player.x < 100)
         {
@@ -39,7 +43,7 @@ class Enemy extends GameObjects.Sprite
     }
 
     // if enemey hits player, player loses health
-    hitPlayer (player: Player)
+    public hitPlayer (player: Player)
     {
         if (this.x - player.x < 10)
         {
@@ -49,7 +53,7 @@ class Enemy extends GameObjects.Sprite
 
 
     // if player hits enemy, enemy loses health
-    hitEnemy(player: Player, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
+    public hitEnemy(player: Player, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
         if (player.x - this.x < 10 && cursors.space.isDown)
         {
             this.health -= 10;
@@ -59,7 +63,7 @@ class Enemy extends GameObjects.Sprite
 
 
     // if the enemies health goes to 0, destroy the sprite
-    dead ()
+    public dead ()
     {
         if (this.health == 0)
         {
