@@ -12,20 +12,27 @@ class Player extends GameObjects.Sprite
 {
     public health: number = 100;
     public score: number;
+    static x: number;
+    static y: number;
 
     // The constructor initializes the player sprite.
-    constructor (scene: Phaser.Scene, x: number, y: number, health: number, score: number)
+    constructor (config: { scene: Phaser.Scene, x: number, y: number, key: string }, health: number, score: number)
     {
-
-        super(scene, x, y, 'mainSprite');
-
+        super(config.scene, config.x, config.y, config.key);
         this.health = health;
         this.score = score;
     }
 
+    // add player
+    static addPlayer(scene: Phaser.Scene, player: Player)
+    {
+        scene.add.existing(player);
+        scene.physics.add.existing(player);
+    }
+
 
     // Takes keyboard input and moves the player sprite accordingly.
-    move (cursors: Phaser.Types.Input.Keyboard.CursorKeys)
+    static move(cursors: Phaser.Types.Input.Keyboard.CursorKeys)
     {
         if (cursors.left.isDown)
         {
@@ -42,7 +49,7 @@ class Player extends GameObjects.Sprite
     }
 
     // don't let the player move below 30 on the y axis
-    update ()
+    update()
     {
         if (this.y > 30)
         {
@@ -51,7 +58,7 @@ class Player extends GameObjects.Sprite
     }
 
     // if players health goes to 0, go to game over
-    gameOver ()
+    gameOver()
     {
         if (this.health == 0)
         {
@@ -60,13 +67,13 @@ class Player extends GameObjects.Sprite
     }
 
     // if player collides with enemy, lose health
-    collideEnemy ()
+    collideEnemy()
     {
         this.health -= 10;
     }
 
     // if player collides with coin, gain score and health
-    collectCoin ()
+    collectCoin()
     {
         this.score += 10;
         this.health += 5;
