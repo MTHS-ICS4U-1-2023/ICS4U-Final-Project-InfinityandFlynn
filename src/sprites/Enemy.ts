@@ -43,11 +43,6 @@ class Enemy extends Physics.Arcade.Sprite {
         player.health -= 10;
     }
 
-    // Generate random x value for enemy (between 500 and 924)
-    static randomX(): number {
-        return Math.floor(Math.random() * (924 - 500 + 1)) + 500;
-    }
-
     update(player: Player, cursors: Phaser.Types.Input.Keyboard.CursorKeys): void {
         this.cursors = cursors;
 
@@ -58,20 +53,22 @@ class Enemy extends Physics.Arcade.Sprite {
         }
 
         // Make enemy move towards player if within 100 pixels
-        const distanceToPlayer = Math.abs(this.x - player.x);
-        if (distanceToPlayer < 300) {
-            this.setVelocityX(this.x > player.x ? -50 : 50);
+        const XdistanceToPlayer = Math.abs(this.x - player.x);
+        if (XdistanceToPlayer < 400) {
+            this.setVelocityX(150);
         } else {
             this.setVelocityX(0);
         }
 
+        const YdistanceToPlayer = Math.abs(this.y - player.y);
+
         // Make enemy attack player if within 10 pixels
-        if (distanceToPlayer < 15){
+        if (XdistanceToPlayer < 15){
             if (cursors.space.isDown){
                 this.health -= 10;
-            } else if (distanceToPlayer < 10){
-                player.health -= 10;
-                this.x += 20;
+            } else if (XdistanceToPlayer < 15 && YdistanceToPlayer < 30){
+                player.health -= 5;
+                this.x -= 30;
             }
         }
     }

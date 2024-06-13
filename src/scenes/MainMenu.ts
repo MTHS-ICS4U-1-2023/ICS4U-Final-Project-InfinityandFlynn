@@ -16,7 +16,7 @@ export class MainMenu extends Scene
         
         this.background = this.add.image(512, 384, 'background');
 
-        this.logo = this.add.image(512, 300, 'enemySprite');
+        this.logo = this.add.image(512, 300, 'logo');
 
         this.title = this.add.text(512, 460, 'Final Project', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
