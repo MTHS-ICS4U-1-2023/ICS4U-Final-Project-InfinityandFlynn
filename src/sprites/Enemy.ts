@@ -55,7 +55,7 @@ class Enemy extends Physics.Arcade.Sprite {
         // Make enemy move towards player if within 100 pixels
         const XdistanceToPlayer = Math.abs(this.x - player.x);
         if (XdistanceToPlayer < 400) {
-            this.setVelocityX(150);
+            this.setVelocityX(XdistanceToPlayer > 0 ? 150 : -150);
         } else {
             this.setVelocityX(0);
         }

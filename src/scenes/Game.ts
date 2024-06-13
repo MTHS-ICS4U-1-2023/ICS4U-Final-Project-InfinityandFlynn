@@ -11,6 +11,7 @@ export class Game extends Phaser.Scene {
 
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
+    private platforms: Phaser.Physics.Arcade.StaticGroup;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
     private finalScore: number = 0; // Property to store the final score
 
@@ -40,11 +41,23 @@ export class Game extends Phaser.Scene {
         // Add player to the scene
         this.add.existing(this.player);
 
+        // Set player's body properties
+        const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
+        playerBody.setAllowGravity(true);
+        playerBody.setImmovable(false);
+
+
         // Make the camera follow the player
         this.camera.startFollow(this.player, true, 0.5, 0.5); // Center the player
 
         // Initialize enemies group
         this.enemies = this.add.group();
+
+        // Platforms
+        this.platforms = this.physics.add.staticGroup();
+        this.platforms.create(400, 300, 'platformObject', 1);
+        this.platforms.create(50, 250, 'platformObject', 1);
+        this.platforms.create(750, 220, 'platformObject', 1);
 
         // Create cursors if input.keyboard is not null
         if (this.input.keyboard) {
@@ -59,6 +72,10 @@ export class Game extends Phaser.Scene {
                     this.physics.add.existing(enemy);
                 });
             }
+
+            // Set collisions between player and platforms
+            this.physics.add.collider(this.player, this.platforms);
+            this.physics.add.collider(this.enemies, this.platforms);
         }
 
         // Create text for player's health
@@ -110,13 +127,19 @@ export class Game extends Phaser.Scene {
             delay: 5000,
             callback: () => {
                 if (this.player) {
-                    if (this.player.health < 95) {
+                    if (this.player.health < 100) {
                         this.player.health += 5;
                     }
                 }
             },
             loop: true
         });
+    }
+
+    createPlatform(x: number, y: number, key: string, scale: number) {
+        const platform = this.platforms.create(x, y, key).setScale(scale).refreshBody();
+        platform.setSize(platform.width * scale, platform.height * scale);
+        platform.setOffset(0, 0);
     }
 
     update() {
