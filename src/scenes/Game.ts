@@ -12,6 +12,7 @@ export class Game extends Phaser.Scene {
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
+    private finalScore: number = 0; // Property to store the final score
 
     constructor() {
         super('Game');
@@ -22,11 +23,11 @@ export class Game extends Phaser.Scene {
         this.camera.setBounds(0, 0, 2048, 576); // Set bounds larger than the visible area
 
         // Add background as a TileSprite for repeating background
-        this.background = this.add.tileSprite(0, 0, 1024, 576, 'gameBG').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, 2048, 576, 'gameBG').setOrigin(0, 0);
         this.background.setScrollFactor(0);
 
         // Set the world bounds so the player can't go below y = 450
-        this.physics.world.setBounds(0, 0, 2048, 450);
+        this.physics.world.setBounds(0, 0, 1048, 450);
 
         // Create player and add to scene
         this.player = new Player({
@@ -40,7 +41,7 @@ export class Game extends Phaser.Scene {
         this.add.existing(this.player);
 
         // Make the camera follow the player
-        this.camera.startFollow(this.player);
+        this.camera.startFollow(this.player, true, 0.5, 0.5); // Center the player
 
         // Initialize enemies group
         this.enemies = this.add.group();
@@ -60,7 +61,6 @@ export class Game extends Phaser.Scene {
             }
         }
 
-        // Display player's health and score in top right corner
         // Create text for player's health
         this.healthText = this.add.text(850, 10, 'Health: ' + (this.player?.health ?? 0), {
             fontFamily: 'Arial Black',
@@ -92,8 +92,8 @@ export class Game extends Phaser.Scene {
             delay: 5000,
             callback: () => {
                 if (this.player) {
-                    const enemyX = this.player.x + Phaser.Math.Between(200, 400); // Get position in front of the player
-                    const enemyY = 435; // Set y position of the enemy
+                    const enemyX = this.player.x - Phaser.Math.Between(200, 400);
+                    const enemyY = 450; // Set y position of the enemy
                     const enemy = Enemy.addEnemy(this, enemyX, enemyY, 'enemySprite', 10); // Create and add enemy
 
                     // Add enemy to the group
@@ -105,18 +105,18 @@ export class Game extends Phaser.Scene {
             loop: true
         });
 
-        // add 10 health to the players health every 15 seconds
+        // Add 5 health to the player's health every 5 seconds
         this.time.addEvent({
-            delay: 1500,
+            delay: 5000,
             callback: () => {
                 if (this.player) {
-                    if (this.player.health < 90){
-                        this.player.health += 10;
+                    if (this.player.health < 95) {
+                        this.player.health += 5;
                     }
                 }
             },
             loop: true
-    })
+        });
     }
 
     update() {
@@ -129,13 +129,21 @@ export class Game extends Phaser.Scene {
                 (enemy as Enemy).update(this.player as Player, this.cursors as Phaser.Types.Input.Keyboard.CursorKeys);
             });
 
-            // Scroll the background based on player's movement
-            this.background.tilePositionX = this.player.x;
+            // Update the background's tile position based on player's movement
+            if (this.player.body) {
+                // Adjust the background's position to give the illusion of infinite scrolling
+                this.background.tilePositionX += this.player.body.velocity.x * this.game.loop.delta / 1000;
+            }
 
             // Check if player health is 0, go to game over
-            if (this.player.health == 0) {
-                this.scene.start('GameOver');
+            if (this.player.health === 0) {
+                this.finalScore = this.player.score; // Store the final score
+                this.scene.start('GameOver', { score: this.finalScore }); // Pass the score to the GameOver scene
             }
+
+            // Ensure the camera keeps the player centered
+            this.camera.scrollX = this.player.x - this.camera.width / 2;
+            this.camera.scrollY = this.player.y - this.camera.height / 2;
 
             // Update text displaying player's health and score
             this.healthText.setText('Health: ' + this.player.health);

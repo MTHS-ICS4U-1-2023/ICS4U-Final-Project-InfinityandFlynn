@@ -37,6 +37,7 @@ export class Preloader extends Scene
         this.load.image('enemySprite', 'enemySprite.png');
         this.load.image('coinObject', 'coinObject.png');
         this.load.image('platformObject', 'platformObject.png');
+        this.load.image('logo', 'logo.png');
     }
 
     create ()

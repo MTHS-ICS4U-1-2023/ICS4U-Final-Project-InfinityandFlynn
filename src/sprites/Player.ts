@@ -42,6 +42,7 @@ class Player extends Physics.Arcade.Sprite {
 
     }
 
+
     update() {
         if (!this.cursors) return;
 
@@ -61,8 +62,5 @@ class Player extends Physics.Arcade.Sprite {
             this.setVelocityY(-150);
         }
     }
-
-    
 }
-
 export default Player;
