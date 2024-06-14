@@ -1,3 +1,11 @@
+/**
+ * Enemy sprites.
+ *
+ * By: Flynn Rundeuiqst & Infinity DeGuzman
+ * Version: 1.0
+ * Since: 15-05-2024
+ */
+
 import { Physics } from 'phaser';
 import Player from './Player';
 
@@ -18,6 +26,9 @@ class Enemy extends Physics.Arcade.Sprite {
 
         // Enable physics
         config.scene.physics.world.enable(this);
+
+        // enable gravity
+        this.setGravity(100);
 
         // Set collide world bounds
         this.setCollideWorldBounds(true);
@@ -52,9 +63,9 @@ class Enemy extends Physics.Arcade.Sprite {
             return;
         }
 
-        // Make enemy move towards player if within 100 pixels
-        const XdistanceToPlayer = Math.abs(this.x - player.x);
-        if (XdistanceToPlayer < 400) {
+        // Make enemy move towards player if within 400 pixels
+        const XdistanceToPlayer = player.x - this.x;
+        if (Math.abs(XdistanceToPlayer) < 400) {
             this.setVelocityX(XdistanceToPlayer > 0 ? 150 : -150);
         } else {
             this.setVelocityX(0);

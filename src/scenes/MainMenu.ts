@@ -1,3 +1,11 @@
+/**
+ * Main menu scene
+ *
+ * By: Flynn Rundeuiqst & Infinity DeGuzman
+ * Version: 1.0
+ * Since: 15-05-2024
+ */
+
 import { Scene, GameObjects } from 'phaser';
 
 export class MainMenu extends Scene
