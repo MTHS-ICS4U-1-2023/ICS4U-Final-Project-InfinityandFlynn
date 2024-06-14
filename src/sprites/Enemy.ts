@@ -1,3 +1,11 @@
+/**
+ * Enemy sprites.
+ *
+ * By: Flynn Rundeuiqst & Infinity DeGuzman
+ * Version: 1.0
+ * Since: 15-05-2024
+ */
+
 import { Physics } from 'phaser';
 import Player from './Player';
 

@@ -1,3 +1,12 @@
+/**
+ * 
+ * Game over scene
+ *
+ * By: Flynn Rundeuiqst & Infinity DeGuzman
+ * Version: 1.0
+ * Since: 15-05-2024
+ */
+
 import { Scene } from 'phaser';
 
 export class GameOver extends Scene {

@@ -1,3 +1,12 @@
+/**
+ * Main.
+ *
+ * By: Flynn Rundeuiqst & Infinity DeGuzman
+ * Version: 1.0
+ * Since: 15-05-2024
+ */
+
+
 import { Boot } from './scenes/Boot';
 import { Game as MainGame } from './scenes/Game';
 import { GameOver } from './scenes/GameOver';

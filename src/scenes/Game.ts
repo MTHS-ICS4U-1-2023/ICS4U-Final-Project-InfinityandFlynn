@@ -1,3 +1,11 @@
+/**
+ * Main game scene
+ *
+ * By: Flynn Rundeuiqst & Infinity DeGuzman
+ * Version: 1.0
+ * Since: 15-05-2024
+ */
+
 import Phaser from 'phaser';
 import Player from '../sprites/Player';
 import Enemy from '../sprites/Enemy';
@@ -11,7 +19,7 @@ export class Game extends Phaser.Scene {
 
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
-    private platforms: Phaser.Physics.Arcade.Group; // Dynamic group for platforms
+    private platforms: Phaser.Physics.Arcade.Group;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
     private finalScore: number = 0;
 
@@ -21,7 +29,7 @@ export class Game extends Phaser.Scene {
 
     create() {
         this.camera = this.cameras.main;
-        this.camera.setBounds(0, 0, 2048, 576); // Set bounds larger than the visible area
+        this.camera.setBounds(0, 0, 2048, 576);
 
         // Add background as a TileSprite for repeating background
         this.background = this.add.tileSprite(0, 0, 2048, 576, 'gameBG').setOrigin(0, 0);
@@ -47,7 +55,7 @@ export class Game extends Phaser.Scene {
         playerBody.setImmovable(false);
 
         // Make the camera follow the player
-        this.camera.startFollow(this.player, true, 0.5, 0.5); // Center the player
+        this.camera.startFollow(this.player, true, 0.5, 0.5);
 
         // Initialize enemies group
         this.enemies = this.add.group();
@@ -159,7 +167,6 @@ export class Game extends Phaser.Scene {
 
             // Update the background's tile position based on player's movement
             if (this.player.body) {
-                // Adjust the background's position to give the illusion of infinite scrolling
                 this.background.tilePositionX += this.player.body.velocity.x * this.game.loop.delta / 1000;
             }
 
@@ -180,7 +187,7 @@ export class Game extends Phaser.Scene {
             // Handle player jump input
             const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
             if (this.cursors.up?.isDown && playerBody.touching.down) {
-                playerBody.setVelocityY(-300); // Adjust the jump velocity as needed
+                playerBody.setVelocityY(-300);
             }
 
             // Update text displaying player's health and score
