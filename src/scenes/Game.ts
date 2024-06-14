@@ -11,9 +11,9 @@ export class Game extends Phaser.Scene {
 
     private player: Player | null = null;
     private enemies: Phaser.GameObjects.Group | null = null;
-    private platforms: Phaser.Physics.Arcade.StaticGroup;
+    private platforms: Phaser.Physics.Arcade.Group; // Dynamic group for platforms
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
-    private finalScore: number = 0; // Property to store the final score
+    private finalScore: number = 0;
 
     constructor() {
         super('Game');
@@ -28,7 +28,7 @@ export class Game extends Phaser.Scene {
         this.background.setScrollFactor(0);
 
         // Set the world bounds so the player can't go below y = 450
-        this.physics.world.setBounds(0, 0, 1048, 450);
+        this.physics.world.setBounds(0, 0, 2048, 450);
 
         // Create player and add to scene
         this.player = new Player({
@@ -46,18 +46,11 @@ export class Game extends Phaser.Scene {
         playerBody.setAllowGravity(true);
         playerBody.setImmovable(false);
 
-
         // Make the camera follow the player
         this.camera.startFollow(this.player, true, 0.5, 0.5); // Center the player
 
         // Initialize enemies group
         this.enemies = this.add.group();
-
-        // Platforms
-        this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(400, 300, 'platformObject', 1);
-        this.platforms.create(50, 250, 'platformObject', 1);
-        this.platforms.create(750, 220, 'platformObject', 1);
 
         // Create cursors if input.keyboard is not null
         if (this.input.keyboard) {
@@ -71,6 +64,18 @@ export class Game extends Phaser.Scene {
                 this.enemies.getChildren().forEach((enemy: Phaser.GameObjects.GameObject) => {
                     this.physics.add.existing(enemy);
                 });
+            }
+
+            // Create platforms group
+            this.platforms = this.physics.add.group({
+                immovable: true,
+                allowGravity: false
+            });
+
+            // Generate platforms every 500 pixels, with a y between 300 and 450
+            for (let counter = 0; counter < 2048; counter += 500) {
+                const y = Phaser.Math.Between(200, 450);
+                this.createPlatform(counter, y, 'platformObject', 1);
             }
 
             // Set collisions between player and platforms
@@ -110,7 +115,7 @@ export class Game extends Phaser.Scene {
             callback: () => {
                 if (this.player) {
                     const enemyX = this.player.x - Phaser.Math.Between(200, 400);
-                    const enemyY = 450; // Set y position of the enemy
+                    const enemyY = Phaser.Math.Between(450, 576);
                     const enemy = Enemy.addEnemy(this, enemyX, enemyY, 'enemySprite', 10); // Create and add enemy
 
                     // Add enemy to the group
@@ -137,7 +142,7 @@ export class Game extends Phaser.Scene {
     }
 
     createPlatform(x: number, y: number, key: string, scale: number) {
-        const platform = this.platforms.create(x, y, key).setScale(scale).refreshBody();
+        const platform = this.platforms.create(x, y, key).setScale(scale).refreshBody() as Phaser.Physics.Arcade.Sprite;
         platform.setSize(platform.width * scale, platform.height * scale);
         platform.setOffset(0, 0);
     }
@@ -158,19 +163,35 @@ export class Game extends Phaser.Scene {
                 this.background.tilePositionX += this.player.body.velocity.x * this.game.loop.delta / 1000;
             }
 
-            // Check if player health is 0, go to game over
-            if (this.player.health === 0) {
-                this.finalScore = this.player.score; // Store the final score
-                this.scene.start('GameOver', { score: this.finalScore }); // Pass the score to the GameOver scene
-            }
-
             // Ensure the camera keeps the player centered
             this.camera.scrollX = this.player.x - this.camera.width / 2;
             this.camera.scrollY = this.player.y - this.camera.height / 2;
 
+            // Update platforms position based on camera scroll
+            this.platforms.getChildren().forEach((platform: Phaser.GameObjects.GameObject) => {
+                const platformBody = (platform as Phaser.Physics.Arcade.Sprite).body as Phaser.Physics.Arcade.Body;
+                platformBody.updateFromGameObject();
+                if (platformBody.x < this.camera.scrollX - 100) {
+                    platformBody.x = this.camera.scrollX + this.camera.width + 500;
+                    platformBody.y = Phaser.Math.Between(300, 450);
+                }
+            });
+
+            // Handle player jump input
+            const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
+            if (this.cursors.up?.isDown && playerBody.touching.down) {
+                playerBody.setVelocityY(-300); // Adjust the jump velocity as needed
+            }
+
             // Update text displaying player's health and score
             this.healthText.setText('Health: ' + this.player.health);
             this.scoreText.setText('Score: ' + this.player.score);
+
+            // Check if player health is 0, go to game over
+            if (this.player.health === 0) {
+                this.finalScore = this.player.score;
+                this.scene.start('GameOver', { score: this.finalScore });
+            }
         }
     }
 }
