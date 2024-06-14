@@ -149,10 +149,10 @@ export class Game extends Phaser.Scene {
         });
     }
 
+    // create platforms
     createPlatform(x: number, y: number, key: string, scale: number) {
-        const platform = this.platforms.create(x, y, key).setScale(scale).refreshBody() as Phaser.Physics.Arcade.Sprite;
-        platform.setSize(platform.width * scale, platform.height * scale);
-        platform.setOffset(0, 0);
+        const platform = this.physics.add.sprite(x, y, key).setScale(scale);
+        this.platforms.add(platform);
     }
 
     update() {
@@ -170,7 +170,7 @@ export class Game extends Phaser.Scene {
                 this.background.tilePositionX += this.player.body.velocity.x * this.game.loop.delta / 1000;
             }
 
-            // Ensure the camera keeps the player centered
+            // Make sure the camera keeps the player centered
             this.camera.scrollX = this.player.x - this.camera.width / 2;
             this.camera.scrollY = this.player.y - this.camera.height / 2;
 
@@ -180,7 +180,7 @@ export class Game extends Phaser.Scene {
                 platformBody.updateFromGameObject();
                 if (platformBody.x < this.camera.scrollX - 100) {
                     platformBody.x = this.camera.scrollX + this.camera.width + 500;
-                    platformBody.y = Phaser.Math.Between(300, 450);
+                    platformBody.y = Phaser.Math.Between(300, 400);
                 }
             });
 
@@ -195,7 +195,7 @@ export class Game extends Phaser.Scene {
             this.scoreText.setText('Score: ' + this.player.score);
 
             // Check if player health is 0, go to game over
-            if (this.player.health === 0) {
+            if (this.player.health == 0) {
                 this.finalScore = this.player.score;
                 this.scene.start('GameOver', { score: this.finalScore });
             }
