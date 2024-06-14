@@ -19,6 +19,9 @@ class Enemy extends Physics.Arcade.Sprite {
         // Enable physics
         config.scene.physics.world.enable(this);
 
+        // enable gravity
+        this.setGravity(100);
+
         // Set collide world bounds
         this.setCollideWorldBounds(true);
     }

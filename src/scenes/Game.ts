@@ -28,7 +28,7 @@ export class Game extends Phaser.Scene {
         this.background.setScrollFactor(0);
 
         // Set the world bounds so the player can't go below y = 450
-        this.physics.world.setBounds(0, 0, 2048, 450);
+        this.physics.world.setBounds(0, 0, 1048, 450);
 
         // Create player and add to scene
         this.player = new Player({
@@ -115,7 +115,7 @@ export class Game extends Phaser.Scene {
             callback: () => {
                 if (this.player) {
                     const enemyX = this.player.x - Phaser.Math.Between(200, 400);
-                    const enemyY = Phaser.Math.Between(450, 576);
+                    const enemyY = 200
                     const enemy = Enemy.addEnemy(this, enemyX, enemyY, 'enemySprite', 10); // Create and add enemy
 
                     // Add enemy to the group
