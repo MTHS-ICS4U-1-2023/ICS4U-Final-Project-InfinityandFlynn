@@ -3,7 +3,7 @@
         "target": "ES2020",
         "useDefineForClassFields": true,
         "module": "ESNext",
-        "outDir": "../ICS4U-Final-Project-InfinityandFlynn/dist",
+        "outDir": "docs",
         "lib": [
             "ES2020",
             "DOM",
@@ -28,6 +28,6 @@
     ],
     "exclude": [
         "../ICS4U-Final-Project-InfinityandFlynn/node_modules",
-        "../ICS4U-Final-Project-InfinityandFlynn/dist"
+        "docs"
     ]
 }
