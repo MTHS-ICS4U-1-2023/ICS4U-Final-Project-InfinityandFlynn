@@ -18,7 +18,7 @@ interface EnemyConfig {
 
 class Enemy extends Physics.Arcade.Sprite {
     health: number;
-    private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
+    //private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
 
     constructor(config: EnemyConfig, health: number = 10) {
         super(config.scene, config.x, config.y, config.key);
